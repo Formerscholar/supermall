@@ -1,6 +1,5 @@
 <template>
   <div id="app"></div>
-  //test
 </template>
 <script>
 export default {
