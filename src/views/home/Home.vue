@@ -7,6 +7,7 @@
     <recommend-view :recommends="recommends" />
     <feature-viwe />
     <tab-control class="tab-control" :titles="['流行','新款','精选']" />
+    <goods-list :goods="goods['pop'].list" />
 
     <ul>
       <li>列表1</li>
@@ -119,6 +120,7 @@ import FeatureViwe from "./childComps/FeatureViwe";
 
 import NavBar from "components/common/navbar/NavBar";
 import TabControl from "components/content/tabControl/TabControl";
+import GoodsList from "components/content/goods/GoodsList";
 
 import { getHomeMultidata, getHomeGoods } from "network/home";
 
@@ -129,7 +131,8 @@ export default {
     RecommendView,
     FeatureViwe,
     NavBar,
-    TabControl
+    TabControl,
+    GoodsList
   },
   data() {
     return {
@@ -182,5 +185,6 @@ export default {
 .tab-control {
   position: sticky;
   top: 44px;
+  z-index: 9;
 }
 </style>
