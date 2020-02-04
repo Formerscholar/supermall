@@ -6,6 +6,7 @@
     <home-swiper :banners="banners" />
     <recommend-view :recommends="recommends" />
     <feature-viwe />
+    <tab-control class="tab-control" :titles="['流行','新款','精选']" />
 
     <ul>
       <li>列表1</li>
@@ -112,20 +113,23 @@
   </div>
 </template>
 <script>
-import NavBar from "components/common/navbar/NavBar";
 import HomeSwiper from "./childComps/HomeSwiper";
 import RecommendView from "./childComps/RecommendView";
 import FeatureViwe from "./childComps/FeatureViwe";
+
+import NavBar from "components/common/navbar/NavBar";
+import TabControl from "components/content/tabControl/TabControl";
 
 import { getHomeMultidata } from "network/home";
 
 export default {
   name: "Home",
   components: {
-    NavBar,
     HomeSwiper,
     RecommendView,
-    FeatureViwe
+    FeatureViwe,
+    NavBar,
+    TabControl
   },
   data() {
     return {
@@ -154,5 +158,9 @@ export default {
   right: 0;
   top: 0;
   z-index: 9;
+}
+.tab-control {
+  position: sticky;
+  top: 44px;
 }
 </style>
