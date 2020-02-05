@@ -1,6 +1,7 @@
 <template>
   <div class="wrapper">
     <ul class="content">
+      <button @click="btn">按钮</button>
       <li>分类列表1</li>
       <li>分类列表2</li>
       <li>分类列表3</li>
@@ -118,7 +119,21 @@ export default {
     // this.scroll = new BScroll(".wrapper", {});
   },
   mounted() {
-    this.scroll = new BScroll(".wrapper", {});
+    this.scroll = new BScroll(".wrapper", {
+      probeType: 3,
+      pullUpLoad: true
+    });
+    this.scroll.on("scroll", position => {
+      // console.log(position);
+    });
+    this.scroll.on("pullingUp", () => {
+      console.log("更多");
+    });
+  },
+  methods: {
+    btn() {
+      console.log("btn");
+    }
   },
   components: {}
 };
