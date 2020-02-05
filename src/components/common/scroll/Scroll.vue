@@ -29,7 +29,8 @@ export default {
       probeType: this.probeType
     });
     this.scroll.on("scroll", position => {
-      console.log(position);
+      // console.log(position);
+      this.$emit("scroll", position);
     });
   },
   methods: {
