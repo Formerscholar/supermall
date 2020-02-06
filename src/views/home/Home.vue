@@ -70,12 +70,22 @@ export default {
     this.getHomeGoods("sell");
   },
   mounted() {
+    const refresh = this.debounce(this.$refs.scroll.refresh, 200);
     this.$bus.$on("itemImageLoad", () => {
-      this.$refs.scroll.refresh();
+      refresh();
     });
   },
   methods: {
     // 事件监听相关的方法
+    debounce(func, delay) {
+      let timer = null;
+      return function(...args) {
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(() => {
+          func.apply(this, args);
+        }, delay);
+      };
+    },
     tabClick(index) {
       switch (index) {
         case 0:
