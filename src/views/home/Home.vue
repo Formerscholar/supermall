@@ -3,6 +3,13 @@
     <nav-bar class="home-nav">
       <div slot="center">购物街</div>
     </nav-bar>
+    <tab-control
+      :titles="['流行','新款','精选']"
+      @tabClick="tabClick"
+      ref="tebControl1"
+      class="tab-control"
+      v-show="isTabFixed"
+    />
     <scroll
       class="content"
       ref="scroll"
@@ -11,15 +18,10 @@
       :pull-up-load="true"
       @pullingUp="loadMore"
     >
-      <home-swiper :banners="banners" />
+      <home-swiper :banners="banners" @swiperImageLoad="swiperImageLoad" />
       <recommend-view :recommends="recommends" />
       <feature-viwe />
-      <tab-control
-        class="tab-control"
-        :titles="['流行','新款','精选']"
-        @tabClick="tabClick"
-        ref="tebControl"
-      />
+      <tab-control :titles="['流行','新款','精选']" @tabClick="tabClick" ref="tebControl2" />
       <goods-list :goods="showGoods" />
     </scroll>
     <back-top @click.native="backClick" v-show="isShowBackTop" />
@@ -62,7 +64,8 @@ export default {
       },
       currentType: "pop",
       isShowBackTop: false,
-      taboffsetTop: 0
+      taboffsetTop: 0,
+      isTabFixed: false
     };
   },
   computed: {
@@ -81,8 +84,6 @@ export default {
     this.$bus.$on("itemImageLoad", () => {
       refresh();
     });
-
-    this.taboffsetTop = this.$refs.TabControl.$el.offsetTop;
   },
   methods: {
     // 事件监听相关的方法
@@ -99,15 +100,21 @@ export default {
           this.currentType = "sell";
           break;
       }
+      this.$refs.tebControl1.currentIndex = index;
+      this.$refs.tebControl2.currentIndex = index;
     },
     backClick() {
       this.$refs.scroll.scrollTo(0, 0);
     },
     contentScroll(position) {
       this.isShowBackTop = -position.y > 1000;
+      this.isTabFixed = -position.y > this.taboffsetTop;
     },
     loadMore() {
       this.getHomeGoods(this.currentType);
+    },
+    swiperImageLoad() {
+      this.taboffsetTop = this.$refs.tebControl2.$el.offsetTop;
     },
     // 网络请求相关的方法
     getHomeMultidata() {
@@ -130,18 +137,12 @@ export default {
 
 <style scoped>
 #home {
-  padding-top: 44px;
   height: 100vh;
   position: relative;
 }
 .home-nav {
   background-color: var(--color-tint);
   color: #fff;
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  z-index: 9;
 }
 
 .content {
@@ -151,5 +152,9 @@ export default {
   bottom: 49px;
   left: 0;
   right: 0;
+}
+.tab-control {
+  position: relative;
+  z-index: 9;
 }
 </style>
