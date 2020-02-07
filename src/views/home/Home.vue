@@ -14,7 +14,12 @@
       <home-swiper :banners="banners" />
       <recommend-view :recommends="recommends" />
       <feature-viwe />
-      <tab-control class="tab-control" :titles="['流行','新款','精选']" @tabClick="tabClick" />
+      <tab-control
+        class="tab-control"
+        :titles="['流行','新款','精选']"
+        @tabClick="tabClick"
+        ref="tebControl"
+      />
       <goods-list :goods="showGoods" />
     </scroll>
     <back-top @click.native="backClick" v-show="isShowBackTop" />
@@ -56,7 +61,8 @@ export default {
         sell: { page: 0, list: [] }
       },
       currentType: "pop",
-      isShowBackTop: false
+      isShowBackTop: false,
+      taboffsetTop: 0
     };
   },
   computed: {
@@ -75,6 +81,8 @@ export default {
     this.$bus.$on("itemImageLoad", () => {
       refresh();
     });
+
+    this.taboffsetTop = this.$refs.TabControl.$el.offsetTop;
   },
   methods: {
     // 事件监听相关的方法
@@ -135,11 +143,7 @@ export default {
   top: 0;
   z-index: 9;
 }
-.tab-control {
-  /* position: sticky; */
-  /* top: 44px; */
-  z-index: 9;
-}
+
 .content {
   overflow: hidden;
   position: absolute;
