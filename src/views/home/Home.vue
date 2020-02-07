@@ -32,6 +32,7 @@ import Scroll from "components/common/scroll/Scroll";
 import BackTop from "components/content/backTop/BackTop";
 
 import { getHomeMultidata, getHomeGoods } from "network/home";
+import { debounce } from "common/utils";
 
 export default {
   name: "Home",
@@ -70,22 +71,14 @@ export default {
     this.getHomeGoods("sell");
   },
   mounted() {
-    const refresh = this.debounce(this.$refs.scroll.refresh, 50);
+    const refresh = debounce(this.$refs.scroll.refresh, 50);
     this.$bus.$on("itemImageLoad", () => {
       refresh();
     });
   },
   methods: {
     // 事件监听相关的方法
-    debounce(func, delay) {
-      let timer = null;
-      return function(...args) {
-        if (timer) clearTimeout(timer);
-        timer = setTimeout(() => {
-          func.apply(this, args);
-        }, delay);
-      };
-    },
+
     tabClick(index) {
       switch (index) {
         case 0:
