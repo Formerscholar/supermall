@@ -7,6 +7,7 @@
       <detail-shop-info :shop="shop" />
       <detail-goods-info :detail-info="detailInfo" @imageLoad="imageLoad" />
       <detail-param-info :param-info="paramInfo" />
+      <detail-comment-info :comment-info="commentInfo" />
     </scroll>
   </div>
 </template>
@@ -18,23 +19,20 @@ import DetailBaseInfo from "./childComps/DetailBaseInfo";
 import DetailShopInfo from "./childComps/DetailShopInfo";
 import DetailGoodsInfo from "./childComps/DetailGoodsInfo";
 import DetailParamInfo from "./childComps/DetailParamInfo";
+import DetailCommentInfo from "./childComps/DetailCommentInfo";
 
 import Scroll from "components/common/scroll/Scroll";
 
-import { getDetail, Goods, Shop, GoodsParam } from "network/detail";
+import {
+  getDetail,
+  Goods,
+  Shop,
+  GoodsParam,
+  getRecommend
+} from "network/detail";
 
 export default {
   name: "Detail",
-  data() {
-    return {
-      iid: null,
-      topImages: [],
-      goods: {},
-      shop: {},
-      detailInfo: {},
-      paramInfo: {}
-    };
-  },
   components: {
     DetailNavBar,
     DetailSwiper,
@@ -42,7 +40,19 @@ export default {
     DetailShopInfo,
     DetailGoodsInfo,
     DetailParamInfo,
+    DetailCommentInfo,
     Scroll
+  },
+  data() {
+    return {
+      iid: null,
+      topImages: [],
+      goods: {},
+      shop: {},
+      detailInfo: {},
+      paramInfo: {},
+      commentInfo: {}
+    };
   },
   created() {
     this.iid = this.$route.params.iid;
@@ -61,6 +71,12 @@ export default {
         data.itemParams.info,
         data.itemParams.rule
       );
+      if (data.rate.cRate !== 0) {
+        this.commentInfo = data.rate.list[0];
+      }
+    });
+    getRecommend().then(res => {
+      console.log(res);
     });
   },
   methods: {
