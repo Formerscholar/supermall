@@ -8,6 +8,7 @@
       <detail-goods-info :detail-info="detailInfo" @imageLoad="imageLoad" />
       <detail-param-info :param-info="paramInfo" />
       <detail-comment-info :comment-info="commentInfo" />
+      <goods-list :goods="recommends" />
     </scroll>
   </div>
 </template>
@@ -22,6 +23,7 @@ import DetailParamInfo from "./childComps/DetailParamInfo";
 import DetailCommentInfo from "./childComps/DetailCommentInfo";
 
 import Scroll from "components/common/scroll/Scroll";
+import GoodsList from "components/content/goods/GoodsList";
 
 import {
   getDetail,
@@ -41,7 +43,8 @@ export default {
     DetailGoodsInfo,
     DetailParamInfo,
     DetailCommentInfo,
-    Scroll
+    Scroll,
+    GoodsList
   },
   data() {
     return {
@@ -51,13 +54,14 @@ export default {
       shop: {},
       detailInfo: {},
       paramInfo: {},
-      commentInfo: {}
+      commentInfo: {},
+      recommends: []
     };
   },
   created() {
     this.iid = this.$route.params.iid;
     getDetail(this.iid).then(res => {
-      console.log(res);
+      // console.log(res);
       const data = res.result;
       this.topImages = data.itemInfo.topImages;
       this.goods = new Goods(
@@ -76,7 +80,8 @@ export default {
       }
     });
     getRecommend().then(res => {
-      console.log(res);
+      // console.log(res);
+      this.recommends = res.data.list;
     });
   },
   methods: {
