@@ -39,7 +39,7 @@ import Scroll from "components/common/scroll/Scroll";
 import BackTop from "components/content/backTop/BackTop";
 
 import { getHomeMultidata, getHomeGoods } from "network/home";
-import { debounce } from "common/utils";
+import { itemListenerMixin } from "common/mixin";
 
 export default {
   name: "Home",
@@ -53,6 +53,7 @@ export default {
     Scroll,
     BackTop
   },
+  mixins: [itemListenerMixin],
   data() {
     return {
       banners: [],
@@ -66,7 +67,7 @@ export default {
       isShowBackTop: false,
       taboffsetTop: 0,
       isTabFixed: false,
-      saveY: 0
+      saveY: 0,
     };
   },
   computed: {
@@ -81,6 +82,7 @@ export default {
   },
   deactivated() {
     this.saveY = this.$refs.scroll.getScrollY();
+    this.$bus.$off("itemImageLoad", this.itemImgListener);
   },
   created() {
     this.getHomeMultidata();
@@ -88,15 +90,9 @@ export default {
     this.getHomeGoods("new");
     this.getHomeGoods("sell");
   },
-  mounted() {
-    const refresh = debounce(this.$refs.scroll.refresh, 50);
-    this.$bus.$on("itemImageLoad", () => {
-      refresh();
-    });
-  },
+  mounted() {},
   methods: {
     // 事件监听相关的方法
-
     tabClick(index) {
       switch (index) {
         case 0:
