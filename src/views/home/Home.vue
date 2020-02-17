@@ -67,7 +67,7 @@ export default {
       isShowBackTop: false,
       taboffsetTop: 0,
       isTabFixed: false,
-      saveY: 0,
+      saveY: 0
     };
   },
   computed: {
