@@ -10,6 +10,7 @@
           class="title-item"
           :class="{active:index === currentIndex}"
           @click="titleClick(index)"
+          :key="index"
         >{{item}}</div>
       </div>
     </nav-bar>
