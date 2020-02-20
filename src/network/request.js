@@ -4,7 +4,7 @@ const secondaryApi = " http://106.54.54.237:8000/api/hy" //备用接口
 import axios from 'axios'
 export function request(config) {
     const instance = axios.create({
-        baseURL: secondaryApi,
+        baseURL: mainApi,
         timeout: 5000
     })
     instance.interceptors.request.use(config => {
