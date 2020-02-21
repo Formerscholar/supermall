@@ -12,6 +12,7 @@
     </scroll>
     <detail-bottom-bar @addToCart="addToCart"/>
     <back-top @click.native="backClick" v-show="isShowBackTop"/>
+<!--    <tosat :message="message" :show="show"/>-->
   </div>
 </template>
 
@@ -30,6 +31,10 @@
 
   import {itemListenerMixin, backTopMixin} from "common/mixin";
   import {debounce} from "common/utils";
+
+  import {mapActions} from 'vuex'
+  // import Tosat from "components/common/tosat/Tosat"
+
 
   import {
     getDetail,
@@ -51,7 +56,8 @@
       DetailCommentInfo,
       DetailBottomBar,
       Scroll,
-      GoodsList
+      GoodsList,
+      // Tosat,
     },
     mixins: [itemListenerMixin, backTopMixin],
     data() {
@@ -66,7 +72,9 @@
         recommends: [],
         themeTopYs: [],
         getThemeTopY: null,
-        currentIndex: 0
+        currentIndex: 0,
+        // message: "",
+        // show: false
       };
     },
     created() {
@@ -116,6 +124,7 @@
       this.$bus.$off("itemImageLoad", this.itemImgListener);
     },
     methods: {
+      ...mapActions(['addCart']),
       imageLoad() {
         this.$refs.scroll.refresh();
         // this.refresh();
@@ -159,7 +168,19 @@
         product.price = this.goods.realPrice;
         product.iid = this.iid;
         // this.$store.commit("addCart", product);
-        this.$store.dispatch("addCart", product)
+        this.addCart(product).then(res => {
+          // this.show = true
+          // this.message = res
+          // setTimeout(() => {
+          //   this.show = false
+          //   this.message = ""
+          // }, 1500)
+          this.$toast.show(res,1500)
+        })
+
+        // this.$store.dispatch("addCart", product).then(res =>{
+        //   console.log(res);
+        // })
       }
     }
   };
